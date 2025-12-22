@@ -36,7 +36,7 @@
 
 ### Notion 
 
-<a href="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png"><img src="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png" alt="" width="700px"></a>
+<a href="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png"><img src="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png" alt="" width="900px"></a>
 
 ---
 
