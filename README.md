@@ -30,9 +30,9 @@
 <a href="https://i.ibb.co/Z1xNPV6H/koreader-notion-sync-sync.png"><img src="https://i.ibb.co/Z1xNPV6H/koreader-notion-sync-sync.png" alt="" width="200px"></a>
 <a href="https://i.ibb.co/xKYPVCsy/koreader-notion-sync-set-token.png"><img src="https://i.ibb.co/xKYPVCsy/koreader-notion-sync-set-token.png" alt="" width="200px"></a>
 <a href="https://i.ibb.co/3mXwXjXF/koreader-notion-sync-settings.png"><img src="https://i.ibb.co/3mXwXjXF/koreader-notion-sync-settings.png" alt="" width="200px"></a>
-<a href="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png"><img src="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png" alt="Settings menu" width="200px"></a>
-<a href="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png"><img src="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png" alt="Gestures configuration" width="200px"></a>
-<a href="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png"><img src="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png" alt="Invoke sync" width="200px"></a>
+<a href="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png"><img src="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png" alt="" width="200px"></a>
+<a href="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png"><img src="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png" alt="" width="200px"></a>
+<a href="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png"><img src="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png" alt="" width="200px"></a>
 
 ### Notion 
 
