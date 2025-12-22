@@ -23,6 +23,23 @@
 
 ---
 
+## Screenshots
+
+### KOReader Interface
+
+<a href="https://i.ibb.co/Z1xNPV6H/koreader-notion-sync-sync.png"><img src="https://i.ibb.co/Z1xNPV6H/koreader-notion-sync-sync.png" alt="" width="200px"></a>
+<a href="https://i.ibb.co/xKYPVCsy/koreader-notion-sync-set-token.png"><img src="https://i.ibb.co/xKYPVCsy/koreader-notion-sync-set-token.png" alt="" width="200px"></a>
+<a href="https://i.ibb.co/3mXwXjXF/koreader-notion-sync-settings.png"><img src="https://i.ibb.co/3mXwXjXF/koreader-notion-sync-settings.png" alt="" width="200px"></a>
+<a href="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png"><img src="https://i.ibb.co/n8KrDhKc/koreader-notion-sync-settings-menu.png" alt="Settings menu" width="200px"></a>
+<a href="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png"><img src="https://i.ibb.co/8tjvYJ0/koreader-notion-sync-gestures.png" alt="Gestures configuration" width="200px"></a>
+<a href="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png"><img src="https://i.ibb.co/rR1XpLP9/koreader-notion-sync-invoke.png" alt="Invoke sync" width="200px"></a>
+
+### Notion 
+
+<a href="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png"><img src="https://i.ibb.co/27VqvxZZ/koreader-notion-sync-notion-database.png" alt="" width="700px"></a>
+
+---
+
 ## 🚀 Installation
 
 ### 1. Download the Plugin
@@ -44,6 +61,8 @@ You should end up with a folder named:
 notionsync.koplugin
 
 ```
+
+> **Tip**: Before you restart your KOReader, you can set up the `notion_token` in the `config.json` file on your computer after setting up Notion. This way you will not need to type the token at your KOReader.
 
 ### 3. Restart KOReader
 Eject your device and restart KOReader to load the new plugin.
@@ -92,13 +111,18 @@ Make sure your database includes the following properties:
 Configure the plugin directly on your device.
 
 1. Open **KOReader**.
-2. Go to the **Tools** menu (screwdriver / wrench icon).
-3. Tap **NotionSync Settings**.
+2. Go to the **Tools** menu (screwdriver / wrench icon). 
+3. Go to second page, then **More tools**
+4. Tap **NotionSync Settings**.
 
 ### Set Notion Token
+
+If you didn't set it up in `config.json` you can also set token here.
+
 1. Tap **Set Notion Token**.
 2. Enter your `ntn_...` key from Notion.
 3. Tap **Save**.
+
 
 ### Select Database
 1. Ensure **Wi-Fi is ON**.
@@ -111,9 +135,9 @@ Configure the plugin directly on your device.
 
 ### Manual Sync
 1. Open a book in KOReader.
-2. Open the **Tools** menu.
-3. Tap **Sync to Notion**.
-4. A popup will show sync progress (e.g., *“Syncing highlights…”*).
+2. Open the **Book** menu, go to Second page.
+3. Tap **NEW: Sync to Notion**.
+4. A popup will show sync progress (e.g., *“Syncing highlights to Notion…”*).
 5. On success, you’ll see a message like:
 ```
 
@@ -125,8 +149,8 @@ Success! New: 5, Updated: 0
 Assign syncing to a gesture for instant access.
 
 1. Go to **Settings (⚙️)** → **Taps and gestures** → **Gesture manager**.
-2. Select a trigger (e.g., **Tap corner → Top-right**).
-3. Choose **Sync to Notion** from the action list.
+2. Select a trigger (e.g., **Tap corner → Bottom-right**).
+3. Choose **General -> Sync to Notion** from the action list (3rd page).
 
 Now, simply tap that corner to sync your current book 📲
 
