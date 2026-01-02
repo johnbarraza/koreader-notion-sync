@@ -269,10 +269,17 @@ function NotionSync:onSyncRequested()
              end
          end
          
-         -- 2. Fallback: Try reading pre-calculated percent from settings
+         -- 2. Fallback: Try reading pre-calculated percent from settings or props
          -- (This matches the 'percent_finished' seen in metadata.epub.lua)
-         if progress == 0 and doc.settings and doc.settings.percent_finished then
-             progress = math.floor(doc.settings.percent_finished * 100) / 100
+         if progress == 0 then
+             local pf = nil
+             if doc.settings and doc.settings.percent_finished then pf = doc.settings.percent_finished end
+             if not pf and doc.percent_finished then pf = doc.percent_finished end
+             if not pf and doc.props and doc.props.percent_finished then pf = doc.props.percent_finished end
+             
+             if pf then
+                progress = math.floor(pf * 100) / 100
+             end
          end
     end)
     payload.progress = progress

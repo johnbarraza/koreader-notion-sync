@@ -22,15 +22,36 @@ function GetHighlights.transform(doc, raw_annotations)
         book_author = raw_author:gsub(" & ", "; "):gsub(" and ", "; ")
     end
     
-    -- Extract ISBN from identifiers string (e.g. "ISBN:978...")
+    -- Extract ISBN robustly (look for ISBN: type identifiers)
+    -- Example identifiers: "uuid:...\nmobi-asin:...\nISBN:978..."
     local book_isbn = props.isbn
     if not book_isbn and props.identifiers then
-        book_isbn = props.identifiers:match("ISBN:(%d+)")
+        -- Lowercase for easier matching
+        local ids = props.identifiers:lower()
+        -- Try to match "isbn:" followed by digits/dashes/X
+        local match = ids:match("isbn:([0-9%-x]+)")
+        if match then book_isbn = match end
     end
     book_isbn = book_isbn or ""
 
-    -- Extract Language
-    local book_language = props.language or "Unknown"
+    -- Extract Extra Stats
+    local total_pages = 0
+    if doc.info and doc.info.summary and doc.info.summary.num_pages then
+        total_pages = doc.info.summary.num_pages
+    elseif props.doc_pages then -- Fallback from metadata file props
+        total_pages = props.doc_pages
+    end
+
+    -- Start Reading Date (from summary status)
+    -- Currently only 'modified' is reliably available in summary, which might be last read date.
+    -- Ideally 'start_reading' is not standardly exposed in getProps(), but we can try getting it from summary if custom.
+    -- We will use 'modified' as a proxy if explicit start not found, or leave empty.
+    local start_date = ""
+    -- Note: Provide current YYYY-MM-DD as fallback if we want, but better to extract from 'summary.modified'
+    -- The user mentioned: ["summary"]["modified"]
+    if doc.info and doc.info.summary and doc.info.summary.modified then
+        start_date = doc.info.summary.modified
+    end
     
     local file_path = doc.file or ""
 
@@ -68,6 +89,8 @@ function GetHighlights.transform(doc, raw_annotations)
         title = book_title,
         isbn = book_isbn,
         language = book_language,
+        pages = total_pages,
+        start_date = start_date,
         highlights = clean_highlights
     }
 end

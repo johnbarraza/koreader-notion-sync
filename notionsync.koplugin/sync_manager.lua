@@ -115,6 +115,14 @@ function SyncManager.sync(client, payload, notify_func, yield_func)
              extra_props["Language"] = { rich_text = {{ text = { content = payload.language } }} }
         end
     end
+    if payload.pages and payload.pages > 0 and valid_props["Pages"] then
+        extra_props["Pages"] = { number = tonumber(payload.pages) }
+    end
+    if payload.start_date and payload.start_date ~= "" and valid_props["Start Reading"] then
+        -- Ensure strict ISO format YYYY-MM-DD
+        local date_val = payload.start_date:sub(1, 10)
+        extra_props["Start Reading"] = { date = { start = date_val } }
+    end
 
     local page_id
     local last_sync_raw = nil
