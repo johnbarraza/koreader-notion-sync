@@ -89,13 +89,45 @@ function SyncManager.sync(client, payload, notify_func, yield_func)
     local page, err = client:findPage(title)
     if not page and err then return { success = false, msg = tostring(err) } end
 
+    -- Fetch Database Schema to see which properties exist (Optional handling)
+    local db_schema, db_err = client:getDatabase(client.database_id)
+    local valid_props = {}
+    if db_schema and db_schema.properties then
+        valid_props = db_schema.properties
+    end
+
+    -- Prepare Properties (Only if they exist in DB)
+    local extra_props = {}
+    if payload.author and valid_props["Authors"] then
+        extra_props["Authors"] = { rich_text = {{ text = { content = payload.author } }} }
+    end
+    if payload.isbn and valid_props["ISBN"] then
+        extra_props["ISBN"] = { rich_text = {{ text = { content = payload.isbn } }} }
+    end
+    if payload.progress and valid_props["Progress"] then
+        extra_props["Progress"] = { number = payload.progress }
+    end
+    if payload.language and valid_props["Language"] then
+        -- Language as 'Select' (best) or 'Text'
+        if valid_props["Language"].type == "select" then
+             extra_props["Language"] = { select = { name = payload.language } }
+        else
+             extra_props["Language"] = { rich_text = {{ text = { content = payload.language } }} }
+        end
+    end
+
     local page_id
     local last_sync_raw = nil
     if page then
         page_id = page.id
         if page.properties["Last Sync"] then last_sync_raw = page.properties["Last Sync"].date and page.properties["Last Sync"].date.start end
+        
+        -- UPDATE PROPERTIES for existing page
+        if next(extra_props) ~= nil then
+            client:updatePageProperties(page_id, extra_props)
+        end
     else
-        local new_p, c_err = client:createPage(title)
+        local new_p, c_err = client:createPage(title, extra_props)
         if not new_p then return { success = false, msg = tostring(c_err) } end
         page_id = new_p.id
     end

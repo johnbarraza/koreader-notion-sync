@@ -257,6 +257,26 @@ function NotionSync:onSyncRequested()
     
     if not payload then self:notify(err or "Error extracting highlights") return end
 
+    -- Add Progress (Protected Call)
+    local progress = 0
+    pcall(function()
+         -- 1. Try calculation from summary (most accurate for current session)
+         if doc.info and doc.info.summary then
+             local current_page = doc.info.summary.curr_page or 0
+             local total_pages = doc.info.summary.num_pages or 1
+             if total_pages > 0 then
+                 progress = math.floor((current_page / total_pages) * 100) / 100
+             end
+         end
+         
+         -- 2. Fallback: Try reading pre-calculated percent from settings
+         -- (This matches the 'percent_finished' seen in metadata.epub.lua)
+         if progress == 0 and doc.settings and doc.settings.percent_finished then
+             progress = math.floor(doc.settings.percent_finished * 100) / 100
+         end
+    end)
+    payload.progress = progress
+
     local loading_popup = InfoMessage:new{
         text = "Syncing highlights to Notion...",
         timeout = nil,

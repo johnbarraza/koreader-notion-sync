@@ -79,6 +79,10 @@ function NotionClient:listDatabases()
     return self:request("POST", "/search", body)
 end
 
+function NotionClient:getDatabase(database_id)
+    return self:request("GET", "/databases/" .. database_id)
+end
+
 function NotionClient:findPage(title)
     if not self.database_id then return nil, "No Database Selected" end
     local query = { filter = { property = "Name", title = { equals = title } } }
@@ -88,13 +92,29 @@ function NotionClient:findPage(title)
     return nil
 end
 
-function NotionClient:createPage(title)
+function NotionClient:createPage(title, extra_props)
     if not self.database_id then return nil, "No Database Selected" end
+    local properties = {
+        Name = { title = {{ text = { content = title } }} }
+    }
+    
+    -- Merge extra properties (ISBN, Author, Progress, etc)
+    if extra_props then
+        for k, v in pairs(extra_props) do
+            properties[k] = v
+        end
+    end
+
     local body = {
         parent = { database_id = self.database_id },
-        properties = { Name = { title = {{ text = { content = title } }} } }
+        properties = properties
     }
     return self:request("POST", "/pages", body)
+end
+
+function NotionClient:updatePageProperties(page_id, properties)
+    local body = { properties = properties }
+    return self:request("PATCH", "/pages/" .. page_id, body)
 end
 
 function NotionClient:updateLastSync(page_id, iso_date)

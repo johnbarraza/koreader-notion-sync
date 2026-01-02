@@ -11,7 +11,27 @@ function GetHighlights.transform(doc, raw_annotations)
     -- 1. Get Book Metadata
     local props = doc:getProps()
     local book_title = props.title or "Unknown Title"
-    local book_author = props.authors or "Unknown Author"
+    -- Try multiple casing/plural variations for safety
+    local raw_author = props.authors or props.author or props.Authors or props.Author
+    local book_author = "Unknown Author"
+    
+    if type(raw_author) == "table" then
+        book_author = table.concat(raw_author, "; ")
+    elseif type(raw_author) == "string" and raw_author ~= "" then
+        -- Normalize separators: " & " -> "; "
+        book_author = raw_author:gsub(" & ", "; "):gsub(" and ", "; ")
+    end
+    
+    -- Extract ISBN from identifiers string (e.g. "ISBN:978...")
+    local book_isbn = props.isbn
+    if not book_isbn and props.identifiers then
+        book_isbn = props.identifiers:match("ISBN:(%d+)")
+    end
+    book_isbn = book_isbn or ""
+
+    -- Extract Language
+    local book_language = props.language or "Unknown"
+    
     local file_path = doc.file or ""
 
     -- 2. Transform Data
@@ -46,6 +66,8 @@ function GetHighlights.transform(doc, raw_annotations)
     return {
         author = book_author,
         title = book_title,
+        isbn = book_isbn,
+        language = book_language,
         highlights = clean_highlights
     }
 end
