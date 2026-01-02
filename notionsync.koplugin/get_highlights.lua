@@ -10,6 +10,26 @@ function GetHighlights.transform(doc, raw_annotations)
 
     -- 1. Get Book Metadata
     local props = doc:getProps()
+    
+    -- DEBUG: Print all props keys to see what we actually have
+    local logger = require("custom_logger")
+    if props then
+        local debug_keys = ""
+        for k, v in pairs(props) do debug_keys = debug_keys .. k .. "=" .. tostring(v) .. "; " end
+        logger.info("NotionSync Props: " .. debug_keys)
+    else
+        logger.info("NotionSync Props: NIL")
+    end
+
+    -- Also check doc.info directly if possible
+    if doc.info then
+        local json = require("json")
+        -- Safe encode just top level to avoid recursion issues
+        pcall(function() logger.info("NotionSync DocInfo: " .. json.encode(doc.info)) end)
+    else
+        logger.info("NotionSync DocInfo: NIL")
+    end
+
     local book_title = props.title or "Unknown Title"
     -- Try multiple casing/plural variations for safety
     local raw_author = props.authors or props.author or props.Authors or props.Author
@@ -22,33 +42,42 @@ function GetHighlights.transform(doc, raw_annotations)
         book_author = raw_author:gsub(" & ", "; "):gsub(" and ", "; ")
     end
     
-    -- Extract ISBN robustly (look for ISBN: type identifiers)
-    -- Example identifiers: "uuid:...\nmobi-asin:...\nISBN:978..."
+    -- Extract ISBN robustly
+    -- Log shows: identifiers=google:...\nisbn:978...
     local book_isbn = props.isbn
     if not book_isbn and props.identifiers then
-        -- Lowercase for easier matching
+        -- Lowercase and look for "isbn:" anywhere (handling newlines)
         local ids = props.identifiers:lower()
-        -- Try to match "isbn:" followed by digits/dashes/X
-        local match = ids:match("isbn:([0-9%-x]+)")
-        if match then book_isbn = match end
+        -- Match isbn: followed by digits/dashes/x, possibly after a newline or start
+        book_isbn = ids:match("isbn:(%d[%d%-]*[xX]?)")
     end
     book_isbn = book_isbn or ""
 
+    -- Extract Language
+    -- Log shows: language=en
+    local book_language = props.language
+    if not book_language and doc.info and doc.info.language then
+        book_language = doc.info.language
+    end
+    if not book_language and props.lang then book_language = props.lang end
+    book_language = book_language or "Unknown"
+
     -- Extract Extra Stats
     local total_pages = 0
-    if doc.info and doc.info.summary and doc.info.summary.num_pages then
+    -- Priority based on logs: doc.info.number_of_pages
+    if doc.info and doc.info.number_of_pages then
+        total_pages = doc.info.number_of_pages
+    elseif doc.info and doc.info.summary and doc.info.summary.num_pages then
         total_pages = doc.info.summary.num_pages
-    elseif props.doc_pages then -- Fallback from metadata file props
+    elseif props.doc_pages then 
         total_pages = props.doc_pages
+    elseif props.pages then
+        total_pages = props.pages
     end
 
-    -- Start Reading Date (from summary status)
-    -- Currently only 'modified' is reliably available in summary, which might be last read date.
-    -- Ideally 'start_reading' is not standardly exposed in getProps(), but we can try getting it from summary if custom.
-    -- We will use 'modified' as a proxy if explicit start not found, or leave empty.
+    -- Start Reading Date
+    -- If doc.info.summary is missing, we try fallback to 'created_at' of the first highlight
     local start_date = ""
-    -- Note: Provide current YYYY-MM-DD as fallback if we want, but better to extract from 'summary.modified'
-    -- The user mentioned: ["summary"]["modified"]
     if doc.info and doc.info.summary and doc.info.summary.modified then
         start_date = doc.info.summary.modified
     end
@@ -58,9 +87,19 @@ function GetHighlights.transform(doc, raw_annotations)
     -- 2. Transform Data
     local clean_highlights = {}
     
+    local first_highlight_date = nil
+    
     for _, item in pairs(raw_annotations) do
         -- Generate ID: md5(filepath + datetime)
         local created_at = item.datetime or ""
+        
+        -- Capture first highlight date as fallback for start_reading
+        if created_at ~= "" then
+             if not first_highlight_date or created_at < first_highlight_date then
+                 first_highlight_date = created_at
+             end
+        end
+
         local id_source = file_path .. created_at
         local unique_id = md5(id_source)
 
@@ -81,6 +120,11 @@ function GetHighlights.transform(doc, raw_annotations)
         }
 
         table.insert(clean_highlights, entry)
+    end
+    
+    -- Fallback Start Date
+    if start_date == "" and first_highlight_date then
+        start_date = first_highlight_date
     end
 
     -- 3. Return Final Payload

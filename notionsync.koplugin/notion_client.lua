@@ -1,7 +1,7 @@
 local https = require("ssl.https")
 local ltn12 = require("ltn12")
 local json = require("json")
-local logger = require("logger")
+local logger = require("custom_logger")
 
 local NotionClient = {}
 
@@ -66,6 +66,8 @@ function NotionClient:request(method, endpoint, body_table)
     end
 
     if code ~= 200 then
+        local response_str = table.concat(response_body)
+        logger.warn("NotionSync HTTP Error Body: " .. response_str)
         return nil, "HTTP " .. tostring(code) .. ": " .. tostring(status)
     end
 
