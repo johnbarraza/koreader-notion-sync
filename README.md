@@ -45,7 +45,7 @@ For the best experience, create a Notion Database with the following columns. **
 | **Pages**    | Number *or* Text | Total pages in the book. |
 | **Start Reading** | Date | Date the book was first opened/highlighted. |
 
-> **Note**: Column names are **case-insensitive** (e.g., "progress", "Progress", "PROGRESS" all work).
+> **Note**: Column names in Notion Database are **case-insensitive** (e.g., "progress", "Progress", "PROGRESS" all work).
 
 ---
 
