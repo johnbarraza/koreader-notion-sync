@@ -9,7 +9,7 @@
 ## ✨ Features
 
 - 📚 **Rich Metadata Sync**  (New!)
-  Automatically populates the following fields in your Notion database (if columns exist):
+  Automatically populates the following fields in your Notion database (if columns exist), they're:
   - **Authors** (Supports `Multi-select` tags or `Text`)
   - **ISBN** (Robust extraction from book files)
   - **Progress** (Real-time reading percentage, derived from book stats or metadata)
