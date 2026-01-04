@@ -2,7 +2,7 @@
 
 **NotionSync** is a powerful plugin for **KOReader** that automatically synchronizes your book highlights and notes directly to a **Notion database**. 
 
-🚀 **This Fork's Special Powers**: Unlike the original, this version automatically extracts and syncs rich book metadata including **Authors, ISBN, Reading Progress (%), Language, Page Count, and Start Date**. It also features a "bulletproof" sync engine that adapts to your Notion database schema (so it won't crash if you set "Pages" as text instead of a number).
+🚀 **This Fork's Special Powers**: Unlike the original, this version automatically extracts and syncs rich book metadata including **Authors, ISBN, Reading Progress (%), Language, Page Count, and Start Date**. 
 
 ---
 
