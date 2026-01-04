@@ -2,14 +2,14 @@
 
 **NotionSync** is a powerful plugin for **KOReader** that automatically synchronizes your book highlights and notes directly to a **Notion database**. 
 
-🚀 **This Fork's Special Powers**: Unlike the original, this version automatically extracts and syncs rich book metadata including **Authors, ISBN, Reading Progress (%), Language, Page Count, and Start Date**
+🚀 **This Fork's Special Powers**: Unlike the original, this version automatically extracts and syncs rich book metadata including **Authors, ISBN, Reading Progress (%), Language, Page Count, and Start Date**. 
 
 ---
 
 ## ✨ Features
 
 - 📚 **Rich Metadata Sync**  (New!)
-  Automatically populates the following fields in your Notion database (if columns exist):
+  Automatically populates the following fields in your Notion database (if columns exist), they're:
   - **Authors** (Supports `Multi-select` tags or `Text`)
   - **ISBN** (Robust extraction from book files)
   - **Progress** (Real-time reading percentage, derived from book stats or metadata)
@@ -45,7 +45,7 @@ For the best experience, create a Notion Database with the following columns. **
 | **Pages**    | Number *or* Text | Total pages in the book. |
 | **Start Reading** | Date | Date the book was first opened/highlighted. |
 
-> **Note**: Column names are **case-insensitive** (e.g., "progress", "Progress", "PROGRESS" all work).
+> **Note**: Column names in Notion Database are **case-insensitive** (e.g., "progress", "Progress", "PROGRESS" all work).
 
 ---
 
